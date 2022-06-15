@@ -1,0 +1,64 @@
+画素ごとのアクセス
+
+画像領域を確保するには
+ 変数作成と同時にコンストラクタで作成する
+OpenCVでの画像表現
+cv::Mat image(cv::Size(640, 480), CV_8UC3);
+
+CV_8UC3
+各 8 ビットの RGB カラー画像など (24 bpp)
+CV_8UC1
+二値画像やグレースケール画像 (8 bpp)
+
+実際のポインタの使い方 実際のポインタの使い方
+for (int y = 0; y < mat.rows; y++) {
+// y ⾏⽬の先頭画素へのポインタを取得
+uchar *p = mat.ptr(y);
+for (int x = 0; x < mat.cols; x++) {
+// y⾏⽬のx列⽬に 255 を書き込み
+p[x] = 255;
+}
+
+CV_8UC3 の RGB 画像の場合
+実際のポインタの使い方 実際のポインタの使い方
+for (int y = 0; y < mat.rows; y++) {
+// y ⾏⽬の先頭画素へのポインタを取得
+uchar *p = mat.ptr(y);
+for (int x = 0; x < mat.cols; x++) {
+// ポインタを使って各画素のRGB値に書き込み
+p[x * 3] = 255; // B
+p[x * 3 + 1] = 0; // G
+p[x * 3 + 2] = 0; // R
+}
+}
+
+ if （x <= 85） y = 2＊x, else y = 0.5＊x＋128
+ ただし，x: 入力画素値，y：結果画素値
+ 出力用のMatデータを入力用（srcとする）と同じサイズで準備
+（dstとする）し，両方にポインタでアクセスし，1画素ずつ上記
+の式で変換していく．
+cv::Mat dst(cv::Size(src.cols, src.rows), CV_8UC1);
+for (int j = 0; j < src.rows; j++) {
+// y ⾏⽬の先頭画素へのポインタを取得
+uchar *p = src.ptr(j);
+uchar *q = dst.ptr(j);
+for (int i = 0; i < src.cols; i++) {
+// j⾏⽬,i列⽬の画素の処理
+if (p[i]<=85) q[i] = 2 * p[i]; //x=p[i],y=q[i]
+else q[i] = 0.5 * p[i] + 128;
+}
+}
+
+// トーンカーブデータ生成
+void calcToneCurve(vector<int>& toneCurve){
+for (int i = 0; i < toneCurve.size(); i++){
+toneCurve[i] = 255 ‐ i;
+}
+}
+
+アルファブレンディング
+cv::resize(srcImage, dstImage, dsize);
+引数
+ srcImage／dstImage: 入力／出力Mat画像
+ dsize:出力サイズ
+ 例 cv::resize(inMat, outMat, Scalar(640,480));

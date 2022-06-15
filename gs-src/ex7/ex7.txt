@@ -1,0 +1,76 @@
+円の描画の例（半径3，赤，線幅2）
+cv::circle(img, center, radius, color, thickness, lineType, shift)
+cv::circle(cImage, cv::Point(center.x, center.y), 3,
+cv::Scalar(0, 0, 255), 2, cv::LineTypes::LINE_AA);
+Anti-Aliasing: 斜めの線がギザギザに見えないようにぼかす
+
+cv::Point center;
+center.x = ...; center.y = ...;
+cv::circle(cImage, center, 3,
+cv::Scalar(0, 0, 255), 2, cv::LineTypes::LINE_FILLED);
+円の内部を輪郭線と同じ色で塗りつぶす
+
+矩形の描画の例（赤，線幅2）
+cv::rectangle(cImage, cv::Point(startp.x, startp.y),
+cv::Point(endp.x, endp.y),
+cv::Scalar(0, 0, 255), 2, cv::LineTypes::LINE_8);
+斜めの線は8隣接画素で表現するLINE_4 は4隣接表現
+
+ 線の描画の例（赤，線幅2）
+cv::line(cImage, cv::Point(startp.x, startp.y),
+    cv::Point(endp.x, endp.y),
+    cv::Scalar(0, 0, 255), 2, cv::LineTypes::LINE_AA);
+
+ コールバック関数（cv::MouseCallback）
+マウスイベントを受け取る関数（イベントハンドラとも称する）
+onMouse(event, x, y, flag, param)
+引数
+ onMouse: コールバック関数の名称
+ event: マウスイベントの種類（整数）
+ x: マウスイベントが発生した時のx座標（整数）
+ y: マウスイベントが発生した時のy座標（整数）
+ flag: フラグの論理和がセットされる（整数）
+– Ctrl，Shift，Altキーが押されているかが分かる
+
+ セットマウスコールバック関数
+（cv::setMouseCallback）
+ウィンドウとコールバック関数を結び付ける関数
+cv::setMouseCallback(windowName, onMouse, param)
+引数
+ windowName: マウスコールバックをするウィンドウの名前
+ onMouse: コールバック関数
+以下の形式でなければならない
+void onMouse(event, x, y, flags, param)
+
+アフィン変換
+
+ getRotationMatrix2D （アフィン変換行列の生成）
+cv::getRotationMatrix2D(center, angle, scale)
+引数
+ center : 回転中心座標（Point型）
+ angle : 回転角度（double型／反時計回りのdegree（度））
+ scale : 拡縮率（double型）
+
+warpAffine （アフィン変換）
+cv::warpAffine(srcImage, dstImage, mapM, dsize)
+引数
+ srcImage／dstImage : 入力画像／出力画像
+ mapM: 変換行列（Mat型）
+（2×3: 同次座標系変換行列，要素は浮動小数点 CV_32FC1）
+ dsize: 出力画像のサイズ（Size型）
+
+射影変換
+ getPerspectiveTransform （射影変換行列の生成）
+cv::getPerspectiveTransform(src[], dst[])
+引数
+ src[] : 入力画像上の4点の座標（Point2f型）
+ dst[] : 出力画像上の4点の座標（Point2f型）
+ 出力: 3×3の射影変換行列
+
+warpPerspective （射影変換）
+cv::warpPerspective(srcImage, dstImage, mapM, dsize)
+引数
+ srcImage／dstImage : 入力画像／出力画像
+ mapM: 変換行列（Mat型）
+（2×3: 同次座標系変換行列，要素は浮動小数点 CV_32FC1）
+ dsize: 出力画像のサイズ（Size型）

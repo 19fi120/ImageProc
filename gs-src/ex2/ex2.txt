@@ -1,0 +1,38 @@
+ 色空間変換関数
+    cv::cvtColor(srcImage,dstImage,code);
+引数
+ srcImage: 入力画像（Mat画像）
+ dstImage: 出力画像（Mat画像）
+ code: 変換コード
+ cv::COLOR_BGR2GRAY
+BGR → グレースケール
+ cv::COLOR_BGR2HSV
+BGR → HSV
+ cv::COLOR_HSV2BGR
+HSV → BGR
+カラー（BGR）からグレースケールへの変換コード
+例 cv::cvtColor(color,gray,cv::COLOR_BGR2GRAY);
+
+Mat gray, grayN;
+// ネガポジ反転
+grayN = ~gray;
+
+チャネル分離関数
+cv::split(image, imageArray);
+引数
+ image: （BGRカラー画像等の）マルチチャンネルの入力画像
+ imageArray: 出力画像（Mat）の配列（要素数はチャネル数）
+ color: BGRカラー画像
+ matArray : 3要素の「1チャネルMat画像」の配列
+Mat matArray[3]; //3枚の画像を格納する配列
+cv::split(color, matArray);
+
+チャネル統合関数
+cv::merge(imageArray, count, dstImage);
+引数
+ imageArray: Mat画像の配列（要素数はチャネル数）
+ count: 統合（merge）するチャネル数
+ dstImage: （BGRカラー画像等の）マルチチャンネルの出力画像
+ matArray : 3要素の「1チャネルMat画像」の配列
+ color: BGRカラー画像
+例 cv::merge(matArray, 3, color);

@@ -1,0 +1,31 @@
+ 画像を保存する関数
+引数
+ filename: 出力ファイルの名前
+ imgage: 保存される画像
+cv::imwrite(filename, image);
+例
+cv::imwrite("result.jpg", image);
+
+Mat宣言後，画像サイズとチャネル数・タイプを指定（5×3行列の場合）
+cv::Mat m1; m1.create(Size(5,3),CV_8UC3);
+既にあるm0データと同じサイズ・チャネル数・タイプで生成（深いコピー）
+cv::Mat m1 = m0.clone();
+cv::Mat m2; m0.copyTo(m2);
+浅いコピー
+cv::Mat b = a;
+全要素を定数等で初期化
+cv::Mat m3 = cv::Mat::zeros(5, 3, CV_8U);// 全要素0 の 5x3 行列
+cv::Mat m4 = cv::Mat::ones(5, 3, CV_8U)*4;// 全要素4 の 5x3 行列
+cv::Mat m5(5, 3, CV_8U); // 0～255の乱数で m5 を初期化
+cv::randu(m5, cv::Scalar::all(0), cv::Scalar::all(255));
+cv::Mat m6(5, 3, CV_32F, cv::Scalar(7)); // 全要素7 の 5x3 行列
+画像サイズと内容の全てを指定（3×3行列の場合）
+cv::Mat m7 = (cv::Mat_<double>(3,3) << 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+
+BGRカラー画像をHSVカラー画像に変換し，Sチャネルの値のみを2倍に強調
+cv::multiply(srcImage, s, dstImage);
+引数
+ srcImage: 入力画像
+ s: 倍率（倍精度実数＝double型）
+ dstImage: 出力画像

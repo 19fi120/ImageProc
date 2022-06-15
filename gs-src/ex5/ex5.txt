@@ -1,0 +1,76 @@
+平滑化
+
+ blur （平均化フィルタ）
+cv::blur(srcImage, dstImage, ksize)
+引数
+ srcImage／dstImage : 入力画像／出力画像
+ ksize: 平滑化カーネルサイズ（cv::Size型／例を参照）
+cv::blur(orgImage, blurredImage, cv::Size(7, 7));
+
+GaussianBlur （ガウシアンフィルタ）
+cv::GaussianBlur(srcImage, dstImage, ksize)
+cv::GaussianBlur(srcImage, dstImage, ksize, sigmaX, sigmaY, borderType)
+引数
+ srcImage／dstImage : 入力画像／出力画像
+ ksize: 平滑化カーネルサイズ ※0もしくは正の奇数のみ
+ sigmaX／sigmaY: カーネルのX／Y方向の標準偏差
+（double型／sigmaYは省略可）
+ borderType: 画像外ピクセルの外挿モード（省略可）
+例
+cv::GaussianBlur(orgImage, blurredImage, cv::Size(7, 7), 2, 0);
+
+ medianBlur （メディアンフィルタ）
+cv::medianBlur(srcImage, dstImage, ksize)
+引数
+ srcImage／dstImage : 入力画像／出力画像
+ ksize: 平滑化カーネルサイズ（1より大きい奇数）
+例
+cv::medianBlur(orgImage,　blurredImage, 7);
+
+グレースケール画像のエッジ抽出 グレースケール画像のエッジ抽出
+
+cv::Sobel(srcImage, dstImage, ddepth, dx, dy)
+引数
+ srcImage／dstImage : 入力画像／出力画像
+ ddepth: ビット深度（整数）
+ dx／dy: x／yに関する微分の次数（整数）
+例
+cv::Sobel(grayImage, edgeImage, CV_8U, 1, 0);
+
+ Laplacian
+cv::Laplacian(srcImage, dstImage, ddepth)
+引数
+ srcImage／dstImage : 入力画像／出力画像
+ ddepth: ビット深度（整数）
+例
+cv::Laplacian(grayImage, edgeImage, CV_8U, 3);
+
+ Canny
+cv::Canny(srcImage, dstImage, threshold1,threshold2)
+引数
+ srcImage: 入力画像
+ dstImage : 出力画像（2値画像）
+ threshold1: ヒステリシス処理における1番目の閾値（double型）
+ threshold2: ヒステリシス処理における2番目の閾値（double型）
+例
+cv::Canny(grayImage, edgeImage, 100, 200);
+
+任意のカーネルによるフィルタリング 任意のカーネルによるフィルタリング
+cv::filter2D(srcImage, dstImage, ddepth, kernel)
+引数
+ srcImage: 入力画像
+ dstImage: 出力画像
+ ddepth: ビット深度（整数）
+ kernel: 任意のカーネル（cv::Mat型）
+
+// src に kernelをフィルタとして適用し dst を得る
+cv::Mat src = ... ;
+cv::Mat dst = ... ;
+float k = 1.5;
+cv::Mat kernel = (Mat_<float>(3,3) <<
+‐k/9, ‐k/9, ‐k/9,
+‐k/9, 1+k*8/9, ‐k/9,
+‐k/9, ‐k/9, ‐k/9 );
+cv::filter2D(src, dst, ‐1, kernel);
+cv::imshow(“result”, dst);
+
